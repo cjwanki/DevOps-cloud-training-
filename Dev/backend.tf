@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "bs101-dev-app-buckettt"
+    bucket         = "vue-dev-app-buckettt-cjw"
     key            = "dev/terraform.tfstate"         # Use a unique path per environment
     region         = "us-west-2"
-    #dynamodb_table = "bs101-dev-app-dbb"
+    #dynamodb_table = "vue-dev-app-dbb"
     encrypt        = true
   }
 }

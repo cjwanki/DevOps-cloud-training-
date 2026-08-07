@@ -1,6 +1,6 @@
 # Define the VPC
-resource "aws_vpc" "bs101-uat" {
-  cidr_block = "10.0.0.0/16"
+resource "aws_vpc" "vue-uat" {
+  cidr_block = "10.1.0.0/16"
   tags = {
     Name = "bme-uat-app-vpc"
   }
@@ -8,8 +8,8 @@ resource "aws_vpc" "bs101-uat" {
 
 # Define Public and Private Subnets
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id                  = aws_vpc.bs101-uat.id
-  cidr_block              = "10.0.1.0/24"
+  vpc_id                  = aws_vpc.vue-uat.id
+  cidr_block              = "10.1.1.0/24"
   availability_zone       = "us-west-2a"
   map_public_ip_on_launch = true
   tags = {
@@ -18,8 +18,8 @@ resource "aws_subnet" "public_subnet_1" {
 }
 
 resource "aws_subnet" "public_subnet_2" {
-  vpc_id                  = aws_vpc.bs101-uat.id
-  cidr_block              = "10.0.2.0/24"
+  vpc_id                  = aws_vpc.vue-uat.id
+  cidr_block              = "10.1.2.0/24"
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = true
   tags = {
@@ -28,8 +28,8 @@ resource "aws_subnet" "public_subnet_2" {
 }
 
 resource "aws_subnet" "private_subnet_1" {
-  vpc_id            = aws_vpc.bs101-uat.id
-  cidr_block        = "10.0.3.0/24"
+  vpc_id            = aws_vpc.vue-uat.id
+  cidr_block        = "10.1.3.0/24"
   availability_zone = "us-west-2a"
   tags = {
     Name = "bme-uat-app-private-subnet-1"
@@ -37,8 +37,8 @@ resource "aws_subnet" "private_subnet_1" {
 }
 
 resource "aws_subnet" "private_subnet_2" {
-  vpc_id            = aws_vpc.bs101-uat.id
-  cidr_block        = "10.0.4.0/24"
+  vpc_id            = aws_vpc.vue-uat.id
+  cidr_block        = "10.1.4.0/24"
   availability_zone = "us-west-2b"
   tags = {
     Name = "bme-uat-app-private-subnet-2"
@@ -46,8 +46,8 @@ resource "aws_subnet" "private_subnet_2" {
 }
 
 # Internet Gateway for public subnets
-resource "aws_internet_gateway" "bs101-uat_igw" {
-  vpc_id = aws_vpc.bs101-uat.id
+resource "aws_internet_gateway" "vue-uat_igw" {
+  vpc_id = aws_vpc.vue-uat.id
   tags = {
     Name = "bme-uat-app-igw"
   }
@@ -55,10 +55,10 @@ resource "aws_internet_gateway" "bs101-uat_igw" {
 
 # Public Route Table with route to Internet Gateway
 resource "aws_route_table" "public_rt" {
-  vpc_id = aws_vpc.bs101-uat.id
+  vpc_id = aws_vpc.vue-uat.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.bs101-uat_igw.id
+    gateway_id = aws_internet_gateway.vue-uat_igw.id
   }
   tags = {
     Name = "bme-uat-app-public-rt"
@@ -78,7 +78,7 @@ resource "aws_route_table_association" "public_subnet_assoc_2" {
 
 # Security Groups
 resource "aws_security_group" "vpc_web_sg" {
-  vpc_id = aws_vpc.bs101-uat.id
+  vpc_id = aws_vpc.vue-uat.id
 
   ingress {
     from_port   = 80
@@ -100,13 +100,13 @@ resource "aws_security_group" "vpc_web_sg" {
 }
 
 resource "aws_security_group" "vpc_app_sg" {
-  vpc_id = aws_vpc.bs101-uat.id
+  vpc_id = aws_vpc.vue-uat.id
 
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"] # Allow internal traffic
+    cidr_blocks = ["10.1.0.0/16"] # Allow internal traffic
   }
 
   egress {
@@ -122,13 +122,13 @@ resource "aws_security_group" "vpc_app_sg" {
 }
 
 resource "aws_security_group" "lambda_sg" {
-  vpc_id = aws_vpc.bs101-uat.id
+  vpc_id = aws_vpc.vue-uat.id
 
   ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/16"]
+    cidr_blocks = ["10.1.0.0/16"]
   }
 
   egress {

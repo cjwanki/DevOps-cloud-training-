@@ -2,7 +2,7 @@
 
 # Web Tier VPC (public resources)
 resource "aws_vpc" "bs101_prod_app" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.2.0.0/16"
 
   tags = {
     Name = "bs101-prod-app-vpc"
@@ -11,7 +11,7 @@ resource "aws_vpc" "bs101_prod_app" {
 
 # App Tier VPC (private resources)
 resource "aws_vpc" "bs101-prod" {
-  cidr_block = "10.1.0.0/16"
+  cidr_block = "10.2.0.0/16"
 
   tags = {
     Name = "bs101-prod-vpc"
@@ -45,7 +45,7 @@ resource "aws_route_table" "public_rt" {
 
 resource "aws_subnet" "public_subnet_1" {
   vpc_id                  = aws_vpc.bs101_prod_app.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "10.2.1.0/24"
   availability_zone       = "us-west-2a"
   map_public_ip_on_launch = true
 
@@ -56,7 +56,7 @@ resource "aws_subnet" "public_subnet_1" {
 
 resource "aws_subnet" "public_subnet_2" {
   vpc_id                  = aws_vpc.bs101_prod_app.id
-  cidr_block              = "10.0.2.0/24"
+  cidr_block              = "10.2.2.0/24"
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = true
 
@@ -81,7 +81,7 @@ resource "aws_route_table_association" "public_subnet_assoc_2" {
 
 resource "aws_subnet" "private_subnet_1" {
   vpc_id                  = aws_vpc.bs101-prod.id
-  cidr_block              = "10.1.1.0/24"
+  cidr_block              = "10.2.1.0/24"
   availability_zone       = "us-west-2a"
   map_public_ip_on_launch = false
 
@@ -92,7 +92,7 @@ resource "aws_subnet" "private_subnet_1" {
 
 resource "aws_subnet" "private_subnet_2" {
   vpc_id                  = aws_vpc.bs101-prod.id
-  cidr_block              = "10.1.2.0/24"
+  cidr_block              = "10.2.2.0/24"
   availability_zone       = "us-west-2b"
   map_public_ip_on_launch = false
 
